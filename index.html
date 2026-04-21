@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>📚 Library Management System</h1>
+                <p>Manage books, users, and transactions efficiently</p>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="navbar">
+            <ul class="nav-menu">
+                <li><a href="#dashboard" class="nav-link active" onclick="showSection('dashboard')">Dashboard</a></li>
+                <li><a href="#books" class="nav-link" onclick="showSection('books')">Books</a></li>
+                <li><a href="#users" class="nav-link" onclick="showSection('users')">Users</a></li>
+                <li><a href="#transactions" class="nav-link" onclick="showSection('transactions')">Transactions</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <!-- ========== DASHBOARD SECTION ========== -->
+            <section id="dashboard" class="section active">
+                <div class="section-title">Dashboard</div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Users</h3>
+                        <p class="stat-value" id="statTotalUsers">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Books</h3>
+                        <p class="stat-value" id="statTotalBooks">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Available Books</h3>
+                        <p class="stat-value" id="statAvailableBooks">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Active Transactions</h3>
+                        <p class="stat-value" id="statActiveTransactions">0</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== BOOKS SECTION ========== -->
+            <section id="books" class="section">
+                <div class="section-title">Books Management</div>
+                
+                <!-- Add Book Form -->
+                <div class="form-container">
+                    <h3>Add New Book</h3>
+                    <form id="addBookForm" class="form">
+                        <div class="form-group">
+                            <label for="bookTitle">Title:</label>
+                            <input type="text" id="bookTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookAuthor">Author:</label>
+                            <input type="text" id="bookAuthor" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookISBN">ISBN:</label>
+                            <input type="text" id="bookISBN" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookQuantity">Quantity:</label>
+                            <input type="number" id="bookQuantity" min="1" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Book</button>
+                    </form>
+                </div>
+
+                <!-- Books List -->
+                <div class="list-container">
+                    <h3>Books List</h3>
+                    <div class="search-box">
+                        <input type="text" id="bookSearchInput" placeholder="Search by title or author...">
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>ISBN</th>
+                                <th>Total</th>
+                                <th>Available</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="booksTableBody">
+                            <!-- Books will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ========== USERS SECTION ========== -->
+            <section id="users" class="section">
+                <div class="section-title">Users Management</div>
+                
+                <!-- Add User Form -->
+                <div class="form-container">
+                    <h3>Add New User</h3>
+                    <form id="addUserForm" class="form">
+                        <div class="form-group">
+                            <label for="userName">Full Name:</label>
+                            <input type="text" id="userName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="userEmail">Email:</label>
+                            <input type="email" id="userEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="userDate">Membership Date:</label>
+                            <input type="date" id="userDate" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add User</button>
+                    </form>
+                </div>
+
+                <!-- Users List -->
+                <div class="list-container">
+                    <h3>Users List</h3>
+                    <div class="search-box">
+                        <input type="text" id="userSearchInput" placeholder="Search by name or email...">
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Membership Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- Users will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ========== TRANSACTIONS SECTION ========== -->
+            <section id="transactions" class="section">
+                <div class="section-title">Transactions Management</div>
+                
+                <!-- Issue Book Form -->
+                <div class="form-container">
+                    <h3>Issue Book to User</h3>
+                    <form id="issueBookForm" class="form">
+                        <div class="form-group">
+                            <label for="issueUserSelect">Select User:</label>
+                            <select id="issueUserSelect" required>
+                                <option value="">-- Select User --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="issueBookSelect">Select Book:</label>
+                            <select id="issueBookSelect" required>
+                                <option value="">-- Select Book --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="issueDays">Days to Borrow:</label>
+                            <input type="number" id="issueDays" min="1" value="14" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Issue Book</button>
+                    </form>
+                </div>
+
+                <!-- Transactions List -->
+                <div class="list-container">
+                    <h3>All Transactions</h3>
+                    <div class="filter-controls">
+                        <select id="transactionStatusFilter">
+                            <option value="">All Status</option>
+                            <option value="Issued">Issued</option>
+                            <option value="Returned">Returned</option>
+                        </select>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>User</th>
+                                <th>Book</th>
+                                <th>Issue Date</th>
+                                <th>Due Date</th>
+                                <th>Return Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionsTableBody">
+                            <!-- Transactions will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <!-- Edit Modals -->
+        <div id="editBookModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('editBookModal')">&times;</span>
+                <h2>Edit Book</h2>
+                <form id="editBookForm" class="form">
+                    <input type="hidden" id="editBookId">
+                    <div class="form-group">
+                        <label for="editBookTitle">Title:</label>
+                        <input type="text" id="editBookTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editBookAuthor">Author:</label>
+                        <input type="text" id="editBookAuthor" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editBookISBN">ISBN:</label>
+                        <input type="text" id="editBookISBN" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editBookQuantity">Total Quantity:</label>
+                        <input type="number" id="editBookQuantity" min="1" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Book</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="editUserModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('editUserModal')">&times;</span>
+                <h2>Edit User</h2>
+                <form id="editUserForm" class="form">
+                    <input type="hidden" id="editUserId">
+                    <div class="form-group">
+                        <label for="editUserName">Full Name:</label>
+                        <input type="text" id="editUserName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editUserEmail">Email:</label>
+                        <input type="email" id="editUserEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editUserDate">Membership Date:</label>
+                        <input type="date" id="editUserDate" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update User</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
